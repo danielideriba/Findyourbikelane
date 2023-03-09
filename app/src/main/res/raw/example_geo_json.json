@@ -1,0 +1,17 @@
+{
+  "type":"FeatureCollection",
+  "features":[{
+    "type":"Feature",
+    "geometry":{
+      "type":"Point",
+      "coordinates":[
+        -70.60471355192333,-33.45284619118534,0,
+        -70.60480679530272,-33.45236514353775,0
+      ]
+    },
+    "properties":{
+      "name":"Example placemark",
+      "description":"Point at the height of the underlying terrain."
+    }
+  }
+]}
