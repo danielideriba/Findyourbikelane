@@ -1,10 +1,13 @@
 package com.findyour.bike.lane
 
 import android.content.Context
-import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.findyour.bike.lane.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -15,11 +18,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLayer.GeoJsonOnFeatureClickListener
-import com.google.maps.android.data.kml.KmlLayer
 import org.json.JSONException
-import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
-import java.io.InputStream
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -39,23 +39,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private fun kmlSettings(context: Context, mMap: GoogleMap) {
-        try {
-            val res: Resources = resources
-            val inStream: InputStream = res.openRawResource(R.raw.example_geo_json)
-            val kmlLayer = KmlLayer(mMap, inStream, context)
-
-            kmlLayer.isLayerOnMap
-
-            kmlLayer.addLayerToMap()
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: XmlPullParserException) {
-            e.printStackTrace()
-        }
-    }
-
     private fun retrieveFileFromResource(context: Context, mMap: GoogleMap) {
         try {
             val layer = GeoJsonLayer(mMap, R.raw.santiago_geo_json, context)
@@ -68,23 +51,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addGeoJsonLayerToMap(layer: GeoJsonLayer) {
-        addColorsToMarkers(layer)
         layer.addLayerToMap()
-        // Demonstrate receiving features via GeoJsonLayer clicks.
-        layer.setOnFeatureClickListener(GeoJsonOnFeatureClickListener { feature ->
-            Toast.makeText(
-                this,
-                "Feature clicked: " + feature.getProperty("name"),
-                Toast.LENGTH_SHORT
-            ).show()
-        })
-    }
+        var style = layer.defaultLineStringStyle
+        style.color = Color.RED
 
-    private fun addColorsToMarkers(layer: GeoJsonLayer) {
-        // Iterate over all the features stored in the layer
-        for (feature in layer.features) {
-            Log.i("TAG", "---"+feature)
-        }
+
+//        layer.setOnFeatureClickListener(GeoJsonOnFeatureClickListener { feature ->
+//            Toast.makeText(
+//                this,
+//                "Feature clicked: " + feature.getProperty("name"),
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        })
     }
 
     /**
@@ -100,11 +78,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val santiago = LatLng(-33.4451371, -70.6578067)
-        mMap.addMarker(MarkerOptions().position(santiago).title("Marker in Santiago - Chile"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(santiago, 15.0f))
+//        val santiago = LatLng(-33.4451371, -70.6578067)
+        val santiagoCallao = LatLng(-33.41954008317103,-70.59893227007824)
 
-//        kmlSettings(this, mMap)
+        mMap.addMarker(MarkerOptions().position(santiagoCallao).title("Marker in Santiago - Chile"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(santiagoCallao, 15.0f))
+
         retrieveFileFromResource(this, mMap)
     }
 }

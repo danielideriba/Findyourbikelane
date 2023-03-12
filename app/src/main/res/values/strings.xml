@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Find your bike lane</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Find your bike lane</string>
+    <string name="search_bike_lane">Search your bike lane</string>
 </resources>
